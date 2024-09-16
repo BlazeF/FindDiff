@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find the Different Shape Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .game-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        .shape {
+            font-size: 50px;
+            margin: 0 10px;
+        }
+        .buttons-container {
+            margin-top: 20px;
+        }
+        .button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 24px;
+        }
+        #startButton {
+            padding: 15px 30px;
+            font-size: 20px;
+            margin-top: 50px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find the Different Shape Game</h1>
+    
+    <!-- Start Button -->
+    <button id="startButton" onclick="startGame()">Start Game</button>
+    
+    <div class="game-container" id="gameContainer">
+        <div id="shape1" class="shape"></div>
+        <div id="shape2" class="shape"></div>
+        <div id="shape3" class="shape"></div>
+        <div id="shape4" class="shape"></div>
+        <div id="shape5" class="shape"></div>
+    </div>
+
+    <div class="buttons-container">
+        <button class="button" onclick="checkAnswer(1)">1</button>
+        <button class="button" onclick="checkAnswer(2)">2</button>
+        <button class="button" onclick="checkAnswer(3)">3</button>
+        <button class="button" onclick="checkAnswer(4)">4</button>
+        <button class="button" onclick="checkAnswer(5)">5</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        let shapes = [
+            "🍎", "🍏", "🍒", "🍇", "🍉", "🏠", "🚗", "✈️", "🚀", "🚢", "🦄", "🐱", "🐶", "🐭", "🐹", "🐻", "🐼", "🐸", 
+            "🐵", "🐯", "🐴", "🦊", "🦁", "🐔", "🐧", "🐦", "🐤", "🐥", "🐺", "🦓", "🦒", "🐍", "🐢", "🦄", "🦋", "🐞",
+            "🦕", "🦖", "🦑", "🐙", "🐡", "🐬", "🦈", "🐋", "🐊", "🐉", "🦢", "🐧", "🦅", "🐓", "🦜", "🦩", "🦚","🔵", "🔴", "🟢", "🟡", "🟠", "🟣", "🟤", "⚫", "⚪", "🔶", "🔷", "🔸", "🔹", 
+            "⬛", "⬜", "◼", "◻", "⬤", "◯", "🔺", "🔻", "⬆️", "⬇️", "⬅️", "➡️", 
+            "✖️", "➕", "➖", "➗", "✳️", "❇️", "❌", "✔️", "⚠️", "♻️", "♾️", 
+            "⏺️", "⏹️", "⏺", "◽", "◾", "▫️", "▪️", "☑️", "🟥", "🟧", "🟨", 
+            "🟩", "🟦", "🟪", "🟫", "⬛️", "⬜️", "🔳", "🔲","⬆️", "⬇️", "⬅️", "➡️", "↗️", "↘️", "↖️", "↙️", "↔️", "↕️", 
+            "🔼", "🔽", "⏩", "⏪", "⏫", "⏬", "🔀", "🔁", "🔂", "🔄", 
+            "🔃", "➡️", "↪️", "↩️", "⤴️", "⤵️", "🔺", "🔻","❤️", "💛", "💚", "💙", "💜", "🧡", "🤍", "🤎", "🖤", 
+            "💔", "❣️", "💕", "💞", "💓", "💗", "💖", "💘", "💝","🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🐨", "🐯", 
+            "🦁", "🐮", "🐷", "🐸", "🐵", "🐔", "🐧", "🐦", "🦉", "🦇", 
+            "🐺", "🦄", "🦓", "🦒", "🐘", "🐭", "🐸", "🐊", "🐢", "🐍", 
+            "🦕", "🦖", "🐬", "🦈", "🐳", "🐋", "🐙", "🦑", "🐞", "🦋", 
+            "🐝", "🐜", "🦧", "🦮", "🦦", "🦥", "🐉", "⭐", "🌟", "🌞", "🌝", "🌛", "🌜", "🌚", "☀️", "🌕", "🌖", "🌗", "🌘", 
+            "🌑", "🌒", "🌓", "🌔", "🌙", "✨", "💫", "☄️", "🔥", "💥", "🌈","🔵", "🔴", "🟢", "🟡", "🟠", "🟣", "🟤", "⚫", "⚪", "🔶", "🔷", "🔸", "🔹", 
+            "⬛", "⬜", "◼", "◻", "⬤", "◯", "🔺", "🔻", "⚠️", "♻️", "♾️", "✳️", 
+            "❇️", "❌", "✔️", "☑️", "🔲", "🔳"
+        ];
+        
+        let correctIndex;
+        let gameInterval;
+        let startTime;
+        
+        function getRandomShapeSet() {
+            let baseShape = shapes[Math.floor(Math.random() * shapes.length)];
+            let differentShape;
+            do {
+                differentShape = shapes[Math.floor(Math.random() * shapes.length)];
+            } while (differentShape === baseShape);
+
+            correctIndex = Math.floor(Math.random() * 5) + 1;
+
+            let shapeSet = [];
+            for (let i = 1; i <= 5; i++) {
+                if (i === correctIndex) {
+                    shapeSet.push(differentShape);
+                } else {
+                    shapeSet.push(baseShape);
+                }
+            }
+            return shapeSet;
+        }
+
+        function displayShapes() {
+            let shapeSet = getRandomShapeSet();
+            document.getElementById('shape1').textContent = shapeSet[0];
+            document.getElementById('shape2').textContent = shapeSet[1];
+            document.getElementById('shape3').textContent = shapeSet[2];
+            document.getElementById('shape4').textContent = shapeSet[3];
+            document.getElementById('shape5').textContent = shapeSet[4];
+
+            let gameContainer = document.getElementById('gameContainer');
+            gameContainer.style.opacity = 1;  // Fade in
+            setTimeout(() => {
+                gameContainer.style.opacity = 0;  // Fade out after 0.5 seconds
+            }, 500);
+        }
+
+        function checkAnswer(selectedIndex) {
+            let now = new Date().getTime();
+            if (now - startTime > 1000) return; // Ignore answers after 1 second
+            if (selectedIndex === correctIndex) {
+                document.getElementById('result').textContent = "Correct!";
+            } else {
+                document.getElementById('result').textContent = "Wrong!";
+            }
+        }
+
+        function startGame() {
+            // Hide Start Button
+            document.getElementById('startButton').style.display = 'none';
+
+            // Start displaying shapes with fade effect every 1 second
+            startTime = new Date().getTime();
+            displayShapes();
+            gameInterval = setInterval(() => {
+                startTime = new Date().getTime();
+                displayShapes();
+            }, 800);  // New set of shapes appear every 0.8 seconds
+
+            // Stop the game after 3 minutes
+            setTimeout(() => clearInterval(gameInterval), 180000);
+        }
+    </script>
+</body>
+</html>
