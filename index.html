@@ -11,7 +11,6 @@
             text-align: center;
         }
 
-        /* Game Container Style */
         .game-container {
             display: flex;
             justify-content: center;
@@ -20,13 +19,11 @@
             transition: opacity 0.5s;
         }
 
-        /* Shape Style */
         .shape {
             font-size: 50px;
             margin: 0 10px;
         }
 
-        /* Buttons Container Style */
         .buttons-container {
             margin-top: 20px;
         }
@@ -38,18 +35,22 @@
             cursor: pointer;
         }
 
-        /* Result Style */
         #result {
             margin-top: 20px;
             font-size: 24px;
         }
 
-        /* Start Button Style */
         #startButton {
             padding: 15px 30px;
             font-size: 20px;
             margin-top: 50px;
             cursor: pointer;
+        }
+
+        /* Score Bar Style */
+        #score {
+            margin-top: 30px;
+            font-size: 22px;
         }
 
         /* Responsive Design: Adjustments for Smaller Screens */
@@ -72,6 +73,10 @@
             #result {
                 font-size: 20px;
             }
+
+            #score {
+                font-size: 20px;
+            }
         }
 
         /* Responsive Design: Adjustments for Very Small Screens (Mobile) */
@@ -92,6 +97,10 @@
             }
 
             #result {
+                font-size: 18px;
+            }
+
+            #score {
                 font-size: 18px;
             }
         }
@@ -121,6 +130,9 @@
 
     <div id="result"></div>
 
+    <!-- Score Bar -->
+    <div id="score">Score: 0/0</div>
+
     <script>
         let shapes = [
             "🍎", "🍏", "🍒", "🍇", "🍉", "🏠", "🚗", "✈️", "🚀", "🚢", "🦄", "🐱", "🐶", "🐭", "🐹", "🐻", "🐼", "🐸", 
@@ -138,7 +150,13 @@
         let correctIndex;
         let gameInterval;
         let startTime;
-        
+        let correctAnswers = 0;
+        let totalAttempts = 0;
+
+        function updateScore() {
+            document.getElementById('score').textContent = `Score: ${correctAnswers}/${totalAttempts}`;
+        }
+
         function getRandomShapeSet() {
             let baseShape = shapes[Math.floor(Math.random() * shapes.length)];
             let differentShape;
@@ -177,16 +195,25 @@
         function checkAnswer(selectedIndex) {
             let now = new Date().getTime();
             if (now - startTime > 2000) return; // Ignore answers after 1 second
+
+            totalAttempts++;
             if (selectedIndex === correctIndex) {
                 document.getElementById('result').textContent = "Correct!";
+                correctAnswers++;
             } else {
                 document.getElementById('result').textContent = "Wrong!";
             }
+            updateScore();  // Update score after each attempt
         }
 
         function startGame() {
             // Hide Start Button
             document.getElementById('startButton').style.display = 'none';
+
+            // Reset score
+            correctAnswers = 0;
+            totalAttempts = 0;
+            updateScore();
 
             // Start displaying shapes with fade effect every 1 second
             startTime = new Date().getTime();
@@ -194,10 +221,13 @@
             gameInterval = setInterval(() => {
                 startTime = new Date().getTime();
                 displayShapes();
-            }, 1000);  // New set of shapes appear every 0.8 seconds
+            }, 1000);  // New set of shapes appear every 1 second
 
             // Stop the game after 3 minutes
-            setTimeout(() => clearInterval(gameInterval), 180000);
+            setTimeout(() => {
+                clearInterval(gameInterval);
+                document.getElementById('result').textContent = `Game Over! Final Score: ${correctAnswers}/${totalAttempts}`;
+            }, 180000); // 3 minutes in milliseconds
         }
     </script>
 </body>
