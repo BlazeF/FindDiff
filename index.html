@@ -47,13 +47,11 @@
             cursor: pointer;
         }
 
-        /* Score Bar Style */
         #score {
             margin-top: 30px;
             font-size: 22px;
         }
 
-        /* Responsive Design: Adjustments for Smaller Screens */
         @media (max-width: 768px) {
             .shape {
                 font-size: 40px;
@@ -79,7 +77,6 @@
             }
         }
 
-        /* Responsive Design: Adjustments for Very Small Screens (Mobile) */
         @media (max-width: 480px) {
             .shape {
                 font-size: 30px;
@@ -109,7 +106,6 @@
 <body>
     <h1>Find the Different Shape Game</h1>
 
-    <!-- Start Button -->
     <button id="startButton" onclick="startGame()">Start Game</button>
 
     <div class="game-container" id="gameContainer">
@@ -129,98 +125,16 @@
     </div>
 
     <div id="result"></div>
-
-    <!-- Score Bar -->
     <div id="score">Score: 0/0</div>
 
     <script>
-        // Define classes of shapes
         let shapes = {
-            arrows: ["⤷", "⤸", "⤹", "⤺", 
-            "⤻", "⤼", "⤽", "⤾", 
-            "⤿", "⥀", "⥁", "⥂", 
-            "⥃", "⥄", "⥅", "⥆", 
-            "⥇", "⥈", "⥉", "⥊", 
-            "⥋", "⥌", "⥍", "⥎", 
-            "⥏", "⥐", "⥑", "⥒", 
-            "⥓", "⥔", "⥕", "⥖", 
-            "⥗", "⥘", "⥙", "⥚", 
-            "⥛", "⥜", "⥝", "⥞", 
-            "⥟", "⥠", "⥡", "⥢", 
-            "⥣", "⥤", "⥥", "⥦", 
-            "⥧", "⥨", "⥩", "⥪", 
-            "⥫", "⥬", "⥭", "⥮", 
-            "⥯", "⥰", "⥱", "⥲", 
-            "⥳", "⥴", "⥵", "⥶"],
-            hearts: ["❤️", // Red Heart
-            "💛", // Yellow Heart
-            "💚", // Green Heart
-            "💙", // Blue Heart
-            "💜", // Purple Heart
-            "🧡", // Orange Heart
-            "💖", // Sparkling Heart
-            "💗", // Growing Heart
-            "💓", // Beating Heart
-            "💞", // Revolving Hearts
-            "💘", // Heart with Arrow
-            "💝", // Heart with Ribbon
-            "💟", // Heart Decoration
-            "💔", // Broken Heart
-            "💕", // Two Hearts
-            "❣️", // Heavy Heart Exclamation
-            "🫶", // Heart Hands
-            "💌", // Love Letter
-            "💓", // Beating Heart
-            "❤️‍🔥", // Heart on Fire
-            "❤️‍🩹", // Mending Heart
-            "💘", // Heart with Arrow
-            "💞", // Revolving Hearts
-            "💟", // Heart Decoration
-            "💖", // Sparkling Heart
-            "💗", // Growing Heart
-            "💝", // Heart with Ribbon
-            "❣️", // Heavy Heart Exclamation
-            "💔", // Broken Heart
-            "💕", // Two Hearts
-            "❤️", // Red Heart
-            "🧡", // Orange Heart
-            "💛", // Yellow Heart
-            "💚", // Green Heart
-            "💙", // Blue Heart
-            "💜"],
-            colors: ["🔴", // Red Circle
-            "🟠", // Orange Circle
-            "🟡", // Yellow Circle
-            "🟢", // Green Circle
-            "🔵", // Blue Circle
-            "🟣", // Purple Circle
-            "🟤", // Brown Circle
-            "⚫", // Black Circle
-            "⚪" // White Circle
-            ],
-
-            // Add more classes if needed
-
-
-    squares : [
-    "🟥", // Red Square
-    "🟧", // Orange Square
-    "🟨", // Yellow Square
-    "🟩", // Green Square
-    "🟦", // Blue Square
-    "🟪", // Purple Square
-    "🟫", // Brown Square
-    "⬛",  // Black Large Square
-    "⬜",  // White Large Square
-    "◼",  // Black Medium Square
-    "◻",  // White Medium Square
-    "▪️", // Black Small Square
-    "▫️", // White Small Square
-    "🔲", // Black Square Button
-    "🔳"  // White Square Button
-]
+            arrows: ["⤷", "⤸", "⤹", "⤺", "⤻", "⤼", "⤽", "⤾", "⤿", "⥀", "⥁", "⥂", "⥃", "⥄", "⥅", "⥆", "⥇", "⥈", "⥉", "⥊", "⥋", "⥌", "⥍", "⥎", "⥏", "⥐", "⥑", "⥒", "⥓", "⥔", "⥕", "⥖", "⥗", "⥘", "⥙", "⥚", "⥛", "⥜", "⥝", "⥞", "⥟", "⥠", "⥡", "⥢", "⥣", "⥤", "⥥", "⥦", "⥧", "⥨", "⥩", "⥪", "⥫", "⥬", "⥭", "⥮", "⥯", "⥰", "⥱", "⥲", "⥳", "⥴", "⥵", "⥶"],
+            hearts: ["❤️", "💛", "💚", "💙", "💜", "🧡", "💖", "💗", "💓", "💞", "💘", "💝", "💟", "💔", "💕", "❣️", "🫶", "💌", "❤️‍🔥", "❤️‍🩹"],
+            colors: ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚫", "⚪"],
+            squares: ["🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬛", "⬜", "◼", "◻", "▪️", "▫️", "🔲", "🔳"]
         };
-        
+
         let correctIndex;
         let gameInterval;
         let startTime;
@@ -232,12 +146,10 @@
         }
 
         function getRandomShapeSet() {
-            // Select a random class of shapes
             const shapeClasses = Object.keys(shapes);
             const selectedClass = shapeClasses[Math.floor(Math.random() * shapeClasses.length)];
             const selectedShapes = shapes[selectedClass];
 
-            // Choose a base shape and a different shape
             let baseShape = selectedShapes[Math.floor(Math.random() * selectedShapes.length)];
             let differentShape;
             do {
@@ -248,33 +160,27 @@
 
             let shapeSet = [];
             for (let i = 1; i <= 5; i++) {
-                if (i === correctIndex) {
-                    shapeSet.push(differentShape);
-                } else {
-                    shapeSet.push(baseShape);
-                }
+                shapeSet.push(i === correctIndex ? differentShape : baseShape);
             }
             return shapeSet;
         }
 
         function displayShapes() {
             let shapeSet = getRandomShapeSet();
-            document.getElementById('shape1').textContent = shapeSet[0];
-            document.getElementById('shape2').textContent = shapeSet[1];
-            document.getElementById('shape3').textContent = shapeSet[2];
-            document.getElementById('shape4').textContent = shapeSet[3];
-            document.getElementById('shape5').textContent = shapeSet[4];
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById(`shape${i}`).textContent = shapeSet[i - 1];
+            }
 
             let gameContainer = document.getElementById('gameContainer');
-            gameContainer.style.opacity = 1;  // Fade in
+            gameContainer.style.opacity = 1;
             setTimeout(() => {
-                gameContainer.style.opacity = 0;  // Fade out after 0.5 seconds
+                gameContainer.style.opacity = 0;
             }, 500);
         }
 
         function checkAnswer(selectedIndex) {
             let now = new Date().getTime();
-            if (now - startTime > 2000) return; // Ignore answers after 2 seconds
+            if (now - startTime > 2000) return;
 
             totalAttempts++;
             if (selectedIndex === correctIndex) {
@@ -283,32 +189,34 @@
             } else {
                 document.getElementById('result').textContent = "Wrong!";
             }
-            updateScore();  // Update score after each attempt
+            updateScore();
         }
 
         function startGame() {
-            // Hide Start Button
             document.getElementById('startButton').style.display = 'none';
-
-            // Reset score
             correctAnswers = 0;
             totalAttempts = 0;
             updateScore();
 
-            // Start displaying shapes with fade effect every 1 second
             startTime = new Date().getTime();
             displayShapes();
             gameInterval = setInterval(() => {
                 startTime = new Date().getTime();
                 displayShapes();
-            }, 800);  // New set of shapes appear every 1 second
+            }, 800);
 
-            // Stop the game after 3 minutes
             setTimeout(() => {
                 clearInterval(gameInterval);
                 document.getElementById('result').textContent = `Game Over! Final Score: ${correctAnswers}/${totalAttempts}`;
-            }, 180000); // 3 minutes in milliseconds
+            }, 180000);
         }
+
+        // Keyboard input handler: 1 to 5 keys
+        document.addEventListener('keydown', function(event) {
+            if (event.key >= '1' && event.key <= '5') {
+                checkAnswer(parseInt(event.key));
+            }
+        });
     </script>
 </body>
 </html>
