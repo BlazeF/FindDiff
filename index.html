@@ -1,222 +1,260 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find the Different Shape Game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find the Different Shape Game (Hard)</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
 
-        .game-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 50px;
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
+    .game-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+        opacity: 0;
+        transition: opacity 0.5s;
+    }
 
-        .shape {
-            font-size: 50px;
-            margin: 0 10px;
-        }
+    .shape {
+        font-size: 50px;
+        margin: 0 12px;
+    }
 
-        .buttons-container {
-            margin-top: 20px;
-        }
+    .shape {
+        font-size: 50px;
+        margin: 0 12px;
+    
+        /* Sketch-like imperfection */
+        filter: blur(0.3px);
+        text-shadow:
+            0.4px 0.2px 0 rgba(0,0,0,0.35),
+           -0.3px -0.2px 0 rgba(0,0,0,0.25);
+    }
+    
 
-        .button {
-            padding: 10px 20px;
-            margin: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    .shape {
+        font-family: "Comic Sans MS", "Segoe Print", "Bradley Hand", cursive;
+    }
+    
 
-        #result {
-            margin-top: 20px;
-            font-size: 24px;
-        }
+    .buttons-container {
+        margin-top: 20px;
+    }
 
-        #startButton {
-            padding: 15px 30px;
-            font-size: 20px;
-            margin-top: 50px;
-            cursor: pointer;
-        }
+    .button {
+        padding: 10px 20px;
+        margin: 5px;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-        #score {
-            margin-top: 30px;
-            font-size: 22px;
-        }
+    #result {
+        margin-top: 20px;
+        font-size: 24px;
+    }
 
-        @media (max-width: 768px) {
-            .shape {
-                font-size: 40px;
-                margin: 0 8px;
-            }
+    #startButton {
+        padding: 15px 30px;
+        font-size: 20px;
+        margin-top: 50px;
+        cursor: pointer;
+    }
 
-            .button {
-                padding: 8px 16px;
-                font-size: 14px;
-            }
-
-            #startButton {
-                padding: 12px 24px;
-                font-size: 18px;
-            }
-
-            #result {
-                font-size: 20px;
-            }
-
-            #score {
-                font-size: 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .shape {
-                font-size: 30px;
-                margin: 0 5px;
-            }
-
-            .button {
-                padding: 5px 10px;
-                font-size: 12px;
-            }
-
-            #startButton {
-                padding: 10px 20px;
-                font-size: 16px;
-            }
-
-            #result {
-                font-size: 18px;
-            }
-
-            #score {
-                font-size: 18px;
-            }
-        }
-    </style>
+    #score {
+        margin-top: 30px;
+        font-size: 22px;
+    }
+</style>
 </head>
+
 <body>
-    <h1>Find the Different Shape Game</h1>
 
-    <button id="startButton" onclick="startGame()">Start Game</button>
+<h1>Find the Different Shape Game (Hard Mode)</h1>
 
-    <div class="game-container" id="gameContainer">
-        <div id="shape1" class="shape"></div>
-        <div id="shape2" class="shape"></div>
-        <div id="shape3" class="shape"></div>
-        <div id="shape4" class="shape"></div>
-        <div id="shape5" class="shape"></div>
-    </div>
+<button id="startButton" onclick="startGame()">Start Game</button>
 
-    <div class="buttons-container">
-        <button class="button" onclick="checkAnswer(1)">1</button>
-        <button class="button" onclick="checkAnswer(2)">2</button>
-        <button class="button" onclick="checkAnswer(3)">3</button>
-        <button class="button" onclick="checkAnswer(4)">4</button>
-        <button class="button" onclick="checkAnswer(5)">5</button>
-    </div>
+<div class="game-container" id="gameContainer">
+    <div id="shape1" class="shape"></div>
+    <div id="shape2" class="shape"></div>
+    <div id="shape3" class="shape"></div>
+    <div id="shape4" class="shape"></div>
+    <div id="shape5" class="shape"></div>
+</div>
 
-    <div id="result"></div>
-    <div id="score">Score: 0/0</div>
+<div class="buttons-container">
+    <button class="button" onclick="checkAnswer(1)">1</button>
+    <button class="button" onclick="checkAnswer(2)">2</button>
+    <button class="button" onclick="checkAnswer(3)">3</button>
+    <button class="button" onclick="checkAnswer(4)">4</button>
+    <button class="button" onclick="checkAnswer(5)">5</button>
+</div>
 
-    <script>
-        let shapes = {
-            arrows: ["⤷", "⤸", "⤹", "⤺", "⤻", "⤼", "⤽", "⤾", "⤿", "⥀", "⥁", "⥂", "⥃", "⥄", "⥅", "⥆", "⥇", "⥈", "⥉", "⥊", "⥋", "⥌", "⥍", "⥎", "⥏", "⥐", "⥑", "⥒", "⥓", "⥔", "⥕", "⥖", "⥗", "⥘", "⥙", "⥚", "⥛", "⥜", "⥝", "⥞", "⥟", "⥠", "⥡", "⥢", "⥣", "⥤", "⥥", "⥦", "⥧", "⥨", "⥩", "⥪", "⥫", "⥬", "⥭", "⥮", "⥯", "⥰", "⥱", "⥲", "⥳", "⥴", "⥵", "⥶"],
-            hearts: ["❤️", "💛", "💚", "💙", "💜", "🧡", "💖", "💗", "💓", "💞", "💘", "💝", "💟", "💔", "💕", "❣️", "🫶", "💌", "❤️‍🔥", "❤️‍🩹"],
-            colors: ["🔴", "🟠", "🟡", "🟢", "🔵", "🟣", "🟤", "⚫", "⚪"],
-            squares: ["🟥", "🟧", "🟨", "🟩", "🟦", "🟪", "🟫", "⬛", "⬜", "◼", "◻", "▪️", "▫️", "🔲", "🔳"]
-        };
+<div id="result"></div>
+<div id="score">Score: 0/0</div>
 
-        let correctIndex;
-        let gameInterval;
-        let startTime;
-        let correctAnswers = 0;
-        let totalAttempts = 0;
+<script>
+/* ---------------- SHAPE SETS (BLACK & WHITE ONLY) ---------------- */
 
-        function updateScore() {
-            document.getElementById('score').textContent = `Score: ${correctAnswers}/${totalAttempts}`;
-        }
+let confusingPairs = [
 
-        function getRandomShapeSet() {
-            const shapeClasses = Object.keys(shapes);
-            const selectedClass = shapeClasses[Math.floor(Math.random() * shapeClasses.length)];
-            const selectedShapes = shapes[selectedClass];
+    /* SQUARE / BOX FAMILY */
+    ["□", "▢", "◻", "⬜"],
+    ["■", "◼", "◾", "⬛"],
+    ["▣", "▤", "▥", "▦", "▧", "▨", "▩"],
 
-            let baseShape = selectedShapes[Math.floor(Math.random() * selectedShapes.length)];
-            let differentShape;
-            do {
-                differentShape = selectedShapes[Math.floor(Math.random() * selectedShapes.length)];
-            } while (differentShape === baseShape);
+    /* TRIANGLE FAMILY */
+    ["△", "▵", "▴"],
+    ["▽", "▿", "▾"],
+    ["▲", "▴"],
+    ["▼", "▾"],
 
-            correctIndex = Math.floor(Math.random() * 5) + 1;
+    /* CIRCLE FAMILY */
+    ["○", "◯", "◌", "◎"],
+    ["●", "◍", "◉"],
 
-            let shapeSet = [];
-            for (let i = 1; i <= 5; i++) {
-                shapeSet.push(i === correctIndex ? differentShape : baseShape);
-            }
-            return shapeSet;
-        }
+    /* DIAMOND / RHOMBUS */
+    ["◇", "◆", "◈", "⬦", "⬥"],
 
-        function displayShapes() {
-            let shapeSet = getRandomShapeSet();
-            for (let i = 1; i <= 5; i++) {
-                document.getElementById(`shape${i}`).textContent = shapeSet[i - 1];
-            }
+    /* ARROWS (DIRECTION-LOCKED) */
+    ["→", "⇒", "⟶", "⟹"],
+    ["←", "⇐", "⟵", "⟸"],
+    ["↑", "⇑", "⟰"],
+    ["↓", "⇓", "⟱"],
 
-            let gameContainer = document.getElementById('gameContainer');
-            gameContainer.style.opacity = 1;
-            setTimeout(() => {
-                gameContainer.style.opacity = 0;
-            }, 500);
-        }
+    /* LINE / STROKE VARIANTS */
+    ["—", "–", "―", "─", "━"],
+    ["|", "‖", "∣", "│", "┃"],
 
-        function checkAnswer(selectedIndex) {
-            let now = new Date().getTime();
-            if (now - startTime > 2000) return;
+    /* CROSS / PLUS */
+    ["+", "✚", "✛", "✜", "✝"],
+    ["×", "✕", "✖"],
 
-            totalAttempts++;
-            if (selectedIndex === correctIndex) {
-                document.getElementById('result').textContent = "Correct!";
-                correctAnswers++;
-            } else {
-                document.getElementById('result').textContent = "Wrong!";
-            }
-            updateScore();
-        }
+    /* MATH LOGIC (VERY HARD) */
+    ["∧", "⋀"],
+    ["∨", "⋁"],
+    ["∩", "⋂"],
+    ["∪", "⋃"],
+    ["≡", "≣"],
+    ["≈", "≋", "≃"],
+    ["≠", "≢"],
 
-        function startGame() {
-            document.getElementById('startButton').style.display = 'none';
-            correctAnswers = 0;
-            totalAttempts = 0;
-            updateScore();
+    /* MISC MICRO-DIFFERENCE */
+    ["⌷", "⌸", "⌹"],
+    ["⌶", "⌺"],
+    ["⌇", "⌗"],
+    ["⊕", "⊖", "⊗"],
+    ["⊙", "⊚", "⊛"]
+];
 
-            startTime = new Date().getTime();
-            displayShapes();
-            gameInterval = setInterval(() => {
-                startTime = new Date().getTime();
-                displayShapes();
-            }, 800);
 
-            setTimeout(() => {
-                clearInterval(gameInterval);
-                document.getElementById('result').textContent = `Game Over! Final Score: ${correctAnswers}/${totalAttempts}`;
-            }, 180000);
-        }
+/* ---------------- GAME STATE ---------------- */
 
-        // Keyboard input handler: 1 to 5 keys
-        document.addEventListener('keydown', function(event) {
-            if (event.key >= '1' && event.key <= '5') {
-                checkAnswer(parseInt(event.key));
-            }
-        });
-    </script>
+let correctIndex;
+let gameInterval;
+let startTime;
+let correctAnswers = 0;
+let totalAttempts = 0;
+
+/* ---------------- UTILS ---------------- */
+
+function updateScore() {
+    document.getElementById('score').textContent =
+        `Score: ${correctAnswers}/${totalAttempts}`;
+}
+
+/* ---------------- SHAPE GENERATION ---------------- */
+
+function getRandomShapeSet() {
+    const pair = confusingPairs[Math.floor(Math.random() * confusingPairs.length)];
+
+    const baseShape = pair[Math.floor(Math.random() * pair.length)];
+    let differentShape;
+
+    do {
+        differentShape = pair[Math.floor(Math.random() * pair.length)];
+    } while (differentShape === baseShape);
+
+    correctIndex = Math.floor(Math.random() * 5) + 1;
+
+    let shapeSet = [];
+    for (let i = 1; i <= 5; i++) {
+        shapeSet.push(i === correctIndex ? differentShape : baseShape);
+    }
+
+    return shapeSet;
+}
+
+/* ---------------- DISPLAY ---------------- */
+
+function displayShapes() {
+    let shapeSet = getRandomShapeSet();
+
+    for (let i = 1; i <= 5; i++) {
+        document.getElementById(`shape${i}`).textContent = shapeSet[i - 1];
+    }
+
+    let gameContainer = document.getElementById('gameContainer');
+    gameContainer.style.opacity = 1;
+
+    setTimeout(() => {
+        gameContainer.style.opacity = 0;
+    }, 500);   // visibility time unchanged
+}
+
+/* ---------------- ANSWER CHECK ---------------- */
+
+function checkAnswer(selectedIndex) {
+    let now = new Date().getTime();
+    if (now - startTime > 2000) return;  // response window unchanged
+
+    totalAttempts++;
+
+    if (selectedIndex === correctIndex) {
+        document.getElementById('result').textContent = "Correct!";
+        correctAnswers++;
+    } else {
+        document.getElementById('result').textContent = "Wrong!";
+    }
+
+    updateScore();
+}
+
+/* ---------------- GAME CONTROL ---------------- */
+
+function startGame() {
+    document.getElementById('startButton').style.display = 'none';
+
+    correctAnswers = 0;
+    totalAttempts = 0;
+    updateScore();
+
+    startTime = new Date().getTime();
+    displayShapes();
+
+    gameInterval = setInterval(() => {
+        startTime = new Date().getTime();
+        displayShapes();
+    }, 800);
+
+    setTimeout(() => {
+        clearInterval(gameInterval);
+        document.getElementById('result').textContent =
+            `Game Over! Final Score: ${correctAnswers}/${totalAttempts}`;
+    }, 180000);  // 3 minutes unchanged
+}
+
+/* ---------------- KEYBOARD INPUT ---------------- */
+
+document.addEventListener('keydown', function (event) {
+    if (event.key >= '1' && event.key <= '5') {
+        checkAnswer(parseInt(event.key));
+    }
+});
+</script>
+
 </body>
 </html>
