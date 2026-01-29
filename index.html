@@ -6,68 +6,56 @@
 <title>Find the Different Shape Game (Hard)</title>
 
 <style>
-    body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-    }
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
 
-    .game-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 50px;
-        opacity: 0;
-        transition: opacity 0.5s;
-    }
+.game-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
 
-    .shape {
-        font-size: 50px;
-        margin: 0 12px;
-    }
+.shape {
+    font-size: 50px;
+    margin: 0 12px;
+    font-family: "Comic Sans MS", "Segoe Print", "Bradley Hand", cursive;
+    filter: blur(0.3px);
+    text-shadow:
+        0.4px 0.2px 0 rgba(0,0,0,0.35),
+       -0.3px -0.2px 0 rgba(0,0,0,0.25);
+}
 
-    .shape {
-        font-size: 50px;
-        margin: 0 12px;
-    
-        /* Sketch-like imperfection */
-        filter: blur(0.3px);
-        text-shadow:
-            0.4px 0.2px 0 rgba(0,0,0,0.35),
-           -0.3px -0.2px 0 rgba(0,0,0,0.25);
-    }
-    
+.buttons-container {
+    margin-top: 20px;
+}
 
-    .shape {
-        font-family: "Comic Sans MS", "Segoe Print", "Bradley Hand", cursive;
-    }
-    
+.button {
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-    .buttons-container {
-        margin-top: 20px;
-    }
+#result {
+    margin-top: 20px;
+    font-size: 22px;
+}
 
-    .button {
-        padding: 10px 20px;
-        margin: 5px;
-        font-size: 16px;
-        cursor: pointer;
-    }
+#score {
+    margin-top: 20px;
+    font-size: 20px;
+}
 
-    #result {
-        margin-top: 20px;
-        font-size: 24px;
-    }
-
-    #startButton {
-        padding: 15px 30px;
-        font-size: 20px;
-        margin-top: 50px;
-        cursor: pointer;
-    }
-
-    #score {
-        margin-top: 30px;
-        font-size: 22px;
-    }
+#startButton {
+    padding: 15px 30px;
+    font-size: 20px;
+    margin-top: 40px;
+    cursor: pointer;
+}
 </style>
 </head>
 
@@ -94,164 +82,125 @@
 </div>
 
 <div id="result"></div>
-<div id="score">Score: 0/0</div>
+<div id="score"></div>
 
 <script>
-/* ---------------- SHAPE SETS (BLACK & WHITE ONLY) ---------------- */
+/* ---------- SHAPES ---------- */
 
-let confusingPairs = [
-
-    /* SQUARE / BOX FAMILY */
-    ["□", "▢", "◻", "⬜"],
-    ["■", "◼", "◾", "⬛"],
-    ["▣", "▤", "▥", "▦", "▧", "▨", "▩"],
-
-    /* TRIANGLE FAMILY */
-    ["△", "▵", "▴"],
-    ["▽", "▿", "▾"],
-    ["▲", "▴"],
-    ["▼", "▾"],
-
-    /* CIRCLE FAMILY */
-    ["○", "◯", "◌", "◎"],
-    ["●", "◍", "◉"],
-
-    /* DIAMOND / RHOMBUS */
-    ["◇", "◆", "◈", "⬦", "⬥"],
-
-    /* ARROWS (DIRECTION-LOCKED) */
-    ["→", "⇒", "⟶", "⟹"],
-    ["←", "⇐", "⟵", "⟸"],
-    ["↑", "⇑", "⟰"],
-    ["↓", "⇓", "⟱"],
-
-    /* LINE / STROKE VARIANTS */
-    ["—", "–", "―", "─", "━"],
-    ["|", "‖", "∣", "│", "┃"],
-
-    /* CROSS / PLUS */
-    ["+", "✚", "✛", "✜", "✝"],
-    ["×", "✕", "✖"],
-
-    /* MATH LOGIC (VERY HARD) */
-    ["∧", "⋀"],
-    ["∨", "⋁"],
-    ["∩", "⋂"],
-    ["∪", "⋃"],
-    ["≡", "≣"],
-    ["≈", "≋", "≃"],
-    ["≠", "≢"],
-
-    /* MISC MICRO-DIFFERENCE */
-    ["⌷", "⌸", "⌹"],
-    ["⌶", "⌺"],
-    ["⌇", "⌗"],
-    ["⊕", "⊖", "⊗"],
-    ["⊙", "⊚", "⊛"]
+const confusingPairs = [
+    ["□","▢","◻","⬜"],
+    ["■","◼","◾","⬛"],
+    ["△","▵","▴"],
+    ["▽","▿","▾"],
+    ["○","◯","◌","◎"],
+    ["●","◍","◉"],
+    ["◇","◆","◈","⬦","⬥"],
+    ["→","⇒","⟶"],
+    ["←","⇐","⟵"],
+    ["↑","⇑"],
+    ["↓","⇓"],
+    ["—","–","―","─"],
+    ["|","‖","│","┃"],
+    ["+","✚","✛","✜"],
+    ["×","✕","✖"],
+    ["≈","≋","≃"],
+    ["≠","≢"]
 ];
 
+/* ---------- GAME STATE ---------- */
 
-/* ---------------- GAME STATE ---------------- */
-
-let correctIndex;
-let gameInterval;
-let startTime;
+let correctIndex = 0;
+let round = 0;
+let maxRounds = 20;
 let correctAnswers = 0;
-let totalAttempts = 0;
+let waitingForAnswer = false;
 
-/* ---------------- UTILS ---------------- */
+/* ---------- UTILS ---------- */
 
 function updateScore() {
-    document.getElementById('score').textContent =
-        `Score: ${correctAnswers}/${totalAttempts}`;
+    document.getElementById("score").textContent =
+        `Round: ${round}/${maxRounds} | Score: ${correctAnswers}`;
 }
 
-/* ---------------- SHAPE GENERATION ---------------- */
+function hideShapes() {
+    document.getElementById("gameContainer").style.opacity = 0;
+}
 
-function getRandomShapeSet() {
+/* ---------- ROUND LOGIC ---------- */
+
+function generateShapes() {
     const pair = confusingPairs[Math.floor(Math.random() * confusingPairs.length)];
+    const base = pair[Math.floor(Math.random() * pair.length)];
 
-    const baseShape = pair[Math.floor(Math.random() * pair.length)];
-    let differentShape;
-
+    let diff;
     do {
-        differentShape = pair[Math.floor(Math.random() * pair.length)];
-    } while (differentShape === baseShape);
+        diff = pair[Math.floor(Math.random() * pair.length)];
+    } while (diff === base);
 
     correctIndex = Math.floor(Math.random() * 5) + 1;
 
-    let shapeSet = [];
     for (let i = 1; i <= 5; i++) {
-        shapeSet.push(i === correctIndex ? differentShape : baseShape);
+        document.getElementById("shape" + i).textContent =
+            (i === correctIndex) ? diff : base;
     }
 
-    return shapeSet;
+    const container = document.getElementById("gameContainer");
+    container.style.opacity = 1;
+
+    setTimeout(hideShapes, 500);
+
+    waitingForAnswer = true;
 }
 
-/* ---------------- DISPLAY ---------------- */
+/* ---------- ANSWER ---------- */
 
-function displayShapes() {
-    let shapeSet = getRandomShapeSet();
+function checkAnswer(index) {
+    if (!waitingForAnswer) return;
 
-    for (let i = 1; i <= 5; i++) {
-        document.getElementById(`shape${i}`).textContent = shapeSet[i - 1];
-    }
+    waitingForAnswer = false;
+    round++;
 
-    let gameContainer = document.getElementById('gameContainer');
-    gameContainer.style.opacity = 1;
-
-    setTimeout(() => {
-        gameContainer.style.opacity = 0;
-    }, 500);   // visibility time unchanged
-}
-
-/* ---------------- ANSWER CHECK ---------------- */
-
-function checkAnswer(selectedIndex) {
-    let now = new Date().getTime();
-    if (now - startTime > 2000) return;  // response window unchanged
-
-    totalAttempts++;
-
-    if (selectedIndex === correctIndex) {
-        document.getElementById('result').textContent = "Correct!";
+    if (index === correctIndex) {
         correctAnswers++;
+        document.getElementById("result").textContent = "Correct!";
     } else {
-        document.getElementById('result').textContent = "Wrong!";
+        document.getElementById("result").textContent = "Wrong!";
     }
 
     updateScore();
+
+    if (round < maxRounds) {
+        setTimeout(generateShapes, 300);
+    } else {
+        endGame();
+    }
 }
 
-/* ---------------- GAME CONTROL ---------------- */
+/* ---------- GAME CONTROL ---------- */
 
 function startGame() {
-    document.getElementById('startButton').style.display = 'none';
+    document.getElementById("startButton").style.display = "none";
+    document.getElementById("result").textContent = "";
 
+    round = 0;
     correctAnswers = 0;
-    totalAttempts = 0;
     updateScore();
 
-    startTime = new Date().getTime();
-    displayShapes();
-
-    gameInterval = setInterval(() => {
-        startTime = new Date().getTime();
-        displayShapes();
-    }, 800);
-
-    setTimeout(() => {
-        clearInterval(gameInterval);
-        document.getElementById('result').textContent =
-            `Game Over! Final Score: ${correctAnswers}/${totalAttempts}`;
-    }, 180000);  // 3 minutes unchanged
+    generateShapes();
 }
 
-/* ---------------- KEYBOARD INPUT ---------------- */
+function endGame() {
+    hideShapes();
+    document.getElementById("result").textContent =
+        `Game Over! Final Score: ${correctAnswers}/${maxRounds}`;
+    document.getElementById("startButton").style.display = "inline-block";
+}
 
-document.addEventListener('keydown', function (event) {
-    if (event.key >= '1' && event.key <= '5') {
-        checkAnswer(parseInt(event.key));
+/* ---------- KEYBOARD ---------- */
+
+document.addEventListener("keydown", e => {
+    if (e.key >= "1" && e.key <= "5") {
+        checkAnswer(parseInt(e.key));
     }
 });
 </script>
