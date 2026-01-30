@@ -21,10 +21,10 @@ body {
 
 .shape {
     font-size: 50px;
-    margin: 0 35px; /* MORE DISTANCE */
+    margin: 0 45px; /* MORE DISTANCE */
     font-family: "Comic Sans MS", "Segoe Print", "Bradley Hand", cursive;
     filter: blur(0.3px);
-    opacity: 0.65; /* LOWER VISIBILITY */
+    opacity: 0.45; /* LOWER VISIBILITY */
     text-shadow:
         0.4px 0.2px 0 rgba(0,0,0,0.35),
        -0.3px -0.2px 0 rgba(0,0,0,0.25);
@@ -148,7 +148,7 @@ function generateShapes() {
     const container = document.getElementById("gameContainer");
     container.style.opacity = 1;
 
-    setTimeout(hideShapes, 300); // VISIBILITY = 300ms
+    setTimeout(hideShapes, 150); // VISIBILITY = 150ms
 
     waitingForAnswer = true;
 }
@@ -208,3 +208,4 @@ document.addEventListener("keydown", e => {
 
 </body>
 </html>
+
